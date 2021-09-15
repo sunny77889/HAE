@@ -16,7 +16,7 @@
 `/experiments/ML.py`对比模型：机器学习方法：PCA，IForest，HBOS
 
 ###操作流程
-1. 下载CIC2017数据集（https://www.unb.ca/cic/datasets/ids-2017.html） 将csv格式的数据文件放在`dataset/raedata/`路径下。
+1. 下载CIC2017数据集（https://www.unb.ca/cic/datasets/ids-2017.html） 将csv格式的数据文件放在`dataset/rawdata/`路径下。
 2. 运行`dataset/data_process.py`进行数据预处理
 3. 运行`hae_dec.py` 进行HAE模型训练和测试
 4. 运行`experiments/`目录下文件进行对比模型的训练与测试
