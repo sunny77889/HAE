@@ -15,20 +15,13 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 from time import time
 from hae.models import ADAE
 from hae.tools import evaluation, evaluation_types, read_dataset, plot_roc
-
-if __name__ == '__main__':
-    train_path = "../dataset/train_data.npy"
-    test_path = "../dataset/test_data.npy"
-    saved_model_path = './savedModel/ABAE/'
-
-    train_data, train_ids, test_data, test_ids = read_dataset(train_path, test_path)
-    clf = ADAE(n_clf=4, original_dim=train_data.shape[1])
+def model_train(clf, train_data, saved_model_path):
     # 模型训练
-    # t1=time()
-    # clf.fit(X=train_data, y=train_data, epochs=10, batch_size=128, validation_data=None)
-    # print("训练时间", time()-t1)
-    # clf.save(saved_model_path)
-
+    t1=time()
+    clf.fit(X=train_data, y=train_data, epochs=10, batch_size=128, validation_data=None)
+    print("训练时间", time()-t1)
+    clf.save(saved_model_path)
+def model_test(clf, test_data, test_labels, test_ids, saved_model_path):
     # 模型预测
     clf.load(saved_model_path)
     t2 = time()
@@ -48,3 +41,16 @@ if __name__ == '__main__':
             pred.append(0)
     evaluation(test_binary_labels, pred)
     evaluation_types(pred, test_types)
+    
+if __name__ == '__main__':
+    train_path = "../dataset/train_data.npy"
+    test_path = "../dataset/test_data.npy"
+    saved_model_path = './savedModel/ABAE/'
+
+    train_data, train_ids, test_data, test_ids = read_dataset(train_path, test_path)
+    clf = ADAE(n_clf=4, original_dim=train_data.shape[1])
+    model_train(clf, train_data, saved_model_path)
+    # model_test(clf, test_data, test_labels, test_ids, saved_model_path)
+   
+
+    
