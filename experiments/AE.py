@@ -17,19 +17,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 屏蔽通知信息和警告信息
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 tf.debugging.set_log_device_placement(True)
-
-
-if __name__ == '__main__':
-    train_path = "../dataset/train_data.npy"
-    test_path = "../dataset/test_data.npy"
-    saved_model_path = './savedModel/AE/'
-
-    # 模型训练与测试
-    print("Read data......")
-    train_data, train_ids, test_data, test_ids = read_dataset(train_path, test_path)  # ids:[sip,sport,dip,dport,types,labels]
-
-    autoencoder = ae_2layer(train_data.shape[1])
-    # 训练
+def model_train(autoencoder, train_data, saved_model_path):
+    # 模型训练
     t1=time()
     print(train_data.shape)
     history = autoencoder.fit(train_data, train_data, epochs=10, batch_size=128, validation_data=None)
@@ -41,7 +30,7 @@ if __name__ == '__main__':
     plt.xlabel('epoch')
     plt.savefig('train_loss')
     plt.show()
-
+def mdoel_test(autoencoder, test_data, test_ids, test_labels, saved_model_path):
     # 测试集评估
     autoencoder.load_weights(saved_model_path)
     t2 = time()
@@ -61,3 +50,17 @@ if __name__ == '__main__':
             pred.append(0)
     evaluation(test_binary_labels, pred)
     evaluation_types(pred, test_types)
+
+if __name__ == '__main__':
+    train_path = "../dataset/train_data.npy"
+    test_path = "../dataset/test_data.npy"
+    saved_model_path = './savedModel/AE/'
+    print("Read data......")
+    train_data, train_ids, test_data, test_ids = read_dataset(train_path, test_path)  # ids:[sip,sport,dip,dport,types,labels]
+
+    autoencoder = ae_2layer(train_data.shape[1])
+    model_train(autoencoder, train_data, saved_model_path))
+    # model_test(autoencoder, test_data, test_ids, test_labels, saved_model_path)
+    
+
+          
